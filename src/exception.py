@@ -1,5 +1,5 @@
 import sys
-import logging
+from src.logger import logging
 
 def error_message_detail(error, error_detail):
     _,_,exc_tb = error_detail.exc_info()  # alt cizgi ilgilenmedigimiz degeri atlamak icin kullanilir
@@ -26,7 +26,12 @@ class CustomException(Exception): # hatalar Exception sinifi kullanilir ve ilave
 # böylece hata daha iyi tanimlanmis olur
 
 
-
+if __name__ == '__main__':
+    try : 
+        a = 1/0
+    except Exception as e:
+        logging.info('Divide by zero')
+        raise CustomException(e, sys)
 
     
     
