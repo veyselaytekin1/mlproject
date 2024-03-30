@@ -5,7 +5,8 @@ from src.logger import logging
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
-
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
 
 
 @dataclass  # bunun ile __init__ yapmadan direk degiskenlerini tanimlayabiliyorsun
@@ -71,6 +72,17 @@ class DataIngestion:
 
 if __name__=='__main__':
     obj=DataIngestion()
-    obj.initiate_data_ingestion()
+    train_data, test_data = obj.initiate_data_ingestion()
+    # bu son satir return olan degerleri buna atiyor, 
+    # iki tane return degeri dönüyor üstte
+
+    data_transformation = DataTransformation()
+    train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data, test_data)
+    # galiba data_transformation dosyasindaki bütün kod bulogu bu satira gizlenmis
+    # onun icin python src/components/data_ingestion.py bu komut ile dosyayi calistidi
+    # cünkü zaten bu calisirsa data_transformation dosyasi calismis olacak
+    
+
+
 
 
