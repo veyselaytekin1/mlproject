@@ -20,6 +20,8 @@ from src.utils import save_object
 @dataclass
 class DataTransformationConfig:
     preprocessor_obj_file_path = os.path.join('artifacts', 'preprocessor.pkl')
+    # buraya model kaydedilmiyor, dataya yapilan preprocessing islemleri kaydediliyor
+    # yeni gelen datalara direkt uygulaniyor
 
 class DataTransformation:
     def __init__(self):
@@ -50,6 +52,8 @@ class DataTransformation:
                     ('imputer', SimpleImputer(strategy='most_frequent')),
                     ('one_hot_encoder', OneHotEncoder()),
                     ('scaler', StandardScaler(with_mean=False)) # galiba categoric oldugu icin, mean alinmaz
+                    # burda normalde categoric bir veriye StandardScaler uygulanmaz ama hemen bir satir üsste 
+                    # OneHot onlari 0,1 yaptigi icin uygulanabilir ama uygulandiginda genelde sifirlar olur
                 ]
             )
             logging.info('Numerical  column encoding completed')
@@ -61,14 +65,18 @@ class DataTransformation:
                     ('cat_pipelines', cat_pipeline, categorical_columns)
                 ]
             )
+            # bu pipeline ile yukardaki islemler ColumnTransformer hazir pipe ile birlestiriliyor
 
             return preprocessor
+            # ve hazir halde kullanilacak pipeine ifade eder, yani pipeline edilmis veri degil,
+            # sadece yapilacakislemi saklar icinde
 
         except Exception as e:
             raise CustomException(e, sys)
 
 
     def initiate_data_transformation(self, train_path, test_path):
+        # bu data_ingestion dosyasinda kullanilacak
 
         try:
             train_df = pd.read_csv(train_path)
@@ -118,3 +126,6 @@ class DataTransformation:
 
         except Exception as e:
             raise CustomException(e, sys)
+
+# bunun sonuna if __name__=='__main__': gibi bisey yapmadi
+# cünkü bunu calistirmak istemiyor, burdakileri data_ingestion.py de kullaniyor import ile

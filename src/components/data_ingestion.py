@@ -9,7 +9,7 @@ from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
 
 
-@dataclass  # bunun ile __init__ yapmadan direk degiskenlerini tanimlayabiliyorsun
+@dataclass  # bunun ile __init__ yapmadan direk degiskenlerini tanimlayabiliyorsun # ama icine bir fonksiyon yazacaksan __init__ kullan dedi
 class DataIngestionConfig:
     train_data_path: str=os.path.join('artifacts', 'train.csv')
     test_data_path: str=os.path.join('artifacts', 'test.csv')
@@ -17,7 +17,12 @@ class DataIngestionConfig:
 
 # bu galiba train ve test datalarini nerede tuttugunu bilen bir component
 # bu yazdigimiz path'ler ile
-# ama icine bir fonksiyon yazacaksan __init__ kullan dedi
+# asagida artifact adinda bir dosya olusacak, bunlar kullanilarak
+# ve data klasöründen data okunacak, data train_test siplit ile 
+# artifacts dosyasina kaydedilecek
+
+
+
 
 # "2yol" eger @dataclass yapisini kullanmak istemez isen
 # class DataIngestionConfig:
@@ -36,6 +41,9 @@ class DataIngestionConfig:
 class DataIngestion:
     def __init__(self):
         self.ingestion_config = DataIngestionConfig() # bu yukardakini tetikleyecek
+        # bu yukarda yazdigimiz yolu bu classta kullanmak icin hazirlanmis
+        # bunun ile(self) DataIngestion classina aliniyor. ve bir asagidakinde kullanilacak
+    
 
     def initiate_data_ingestion(self): # data okumak icin 
         logging.info('Entered the data ingestion method or component')
@@ -47,14 +55,19 @@ class DataIngestion:
             # istersen kodlarini API dan veya database den cekecek sekilde ayarlayabilirsin dedi
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
+            # bunun ile artifacts adinda bir klasör olusuyor, ve icine train_data_path kullanilarak
+            # bir train file olusturuluyor
 
             df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
+            # bunun ile data asagida bölünmeden önce tüm hali kaydediliyor
 
             logging.info('Train test split initiated')
             train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
+            # burda datalar bölünüyor ve asagiya paket halinde veriliyor
 
             train_set.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
             test_set.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
+            #burda alinan veriler csv ye kaydediliyor, en yukarida belirtilen pathler bir daha kullaniliyor
 
             logging.info('Ingestion of data is completed')
 
@@ -75,6 +88,12 @@ if __name__=='__main__':
     train_data, test_data = obj.initiate_data_ingestion()
     # bu son satir return olan degerleri buna atiyor, 
     # iki tane return degeri dönüyor üstte
+    # ve sadece path yapmiyor, datayi train test diye bölüyor ve bu yeni olusturulan datalarin
+    # gercek yolu
+    # en yukardaki sadece sözde bir yoldu, o öyle kalmasi bir anlam ifade etmezdi
+    # cünkü daha train_test ile bölünmemisti, initiate_data_ingestion() bunun return ile
+    # dosyalarin yolu tam netllesmis oluyor
+    
 
     data_transformation = DataTransformation()
     train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data, test_data)
