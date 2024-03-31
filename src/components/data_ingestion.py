@@ -100,6 +100,11 @@ if __name__=='__main__':
     # galiba data_transformation dosyasindaki bütün kod bulogu bu satira gizlenmis
     # onun icin python src/components/data_ingestion.py bu komut ile dosyayi calistidi
     # cünkü zaten bu calisirsa data_transformation dosyasi calismis olacak
+    # bu kod ile veri setine uygulanacak transformation islemleri yani 
+    # data_transformation dosyasindaki preprocessing_obj bu ifadede gizlenmis olan
+    # columnTransformer ifadesi ndeki Standartscaler ve OneHotencoder uygulandiktan sonra
+    # verinin array halini retuen ediyordu, burda o return edilen degerler 
+    # degiskene ataniyor
     
 
 

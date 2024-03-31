@@ -86,6 +86,8 @@ class DataTransformation:
             logging.info('Obtaining preprocessing object')
 
             preprocessing_obj = self.get_data_transformer_object()
+            # bunun icinde yukarida tanimlanan ColumnTransformer () standart sclaer ve
+            # OneHot encoder islemleri sakli
 
             target_column_name = 'math_score'
             numerical_columns = ['writing_score', 'reading_score']
@@ -102,12 +104,16 @@ class DataTransformation:
 
             input_feature_train_arr = preprocessing_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
+            # bu fit_transform kendi basina birsey yapmaz, önceden belirlenen veriye uygulanacak
+            # islemleri veriye uygular mesela preprocessing_obj bu yukarida Columntransformer 
+            # ifadesi icinde gizlenen degerler ve fit_transform ile train setine uygulaniyor
 
             train_arr = np.c_[
                 input_feature_train_arr, np.array(target_feature_train_df)
             ]
 
             test_arr = np.c_[input_feature_test_arr, np.array(target_feature_test_df)]
+            #bu transform islemi uygulanan veri setine numpy array olarak veriyor
 
             logging.info(f"Saved preprocessing object")
 
