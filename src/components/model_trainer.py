@@ -48,6 +48,7 @@ class ModelTrainer:
                 "AdaBoost Regressor": AdaBoostRegressor(),
             }
             # bunun GridSearch olayini util.py icindeki evaluate_model func. yapiyor
+            # bu paramaetreleri baska bir file yada yaml file acarak yapmak daha iyi olur dedi
             params={
                 "Decision Tree": {
                     'criterion':['squared_error', 'friedman_mse', 'absolute_error', 'poisson'],
