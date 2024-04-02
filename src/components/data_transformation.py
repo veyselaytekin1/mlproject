@@ -133,5 +133,5 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e, sys)
 
-# bunun sonuna if __name__=='__main__': gibi bisey yapmadi
+# bunun sonuna if __name__=='__main__': gibi bisey yapmadi 
 # cünkü bunu calistirmak istemiyor, burdakileri data_ingestion.py de kullaniyor import ile

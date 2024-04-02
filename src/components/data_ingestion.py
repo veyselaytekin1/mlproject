@@ -8,6 +8,9 @@ from dataclasses import dataclass
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
 
+from src.components.model_trainer import ModelTrainer
+from src.components.model_trainer import ModelTrainerConfig
+
 
 @dataclass  # bunun ile __init__ yapmadan direk degiskenlerini tanimlayabiliyorsun # ama icine bir fonksiyon yazacaksan __init__ kullan dedi
 class DataIngestionConfig:
@@ -83,6 +86,17 @@ class DataIngestion:
         except Exception as e:
             raise CustomException(e, sys)
 
+
+# benim anladigim: model_trainer dosyasini yazdiktan sonra modeli bu dosyayi calistirarak 
+# train etti, ve cikti aldi. ve bunu simdilik ana dosyagibi yapti, projeyi burdan calistiriyor
+# aslinda tüm istedigi dosyalarda bunu yapabilirdi. burdaki gerekli adimlari ve fonksiyonlari 
+# impport edererk
+
+
+#Proji yürütmek icin Ingestion dosysini secmis galiba 
+# burda asagida  önce datayi alacak, sonra transformation islemleri uygulayacak
+# ve bir adim sonra train islemleri uygulayacak
+
 if __name__=='__main__':
     obj=DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()
@@ -105,6 +119,12 @@ if __name__=='__main__':
     # columnTransformer ifadesi ndeki Standartscaler ve OneHotencoder uygulandiktan sonra
     # verinin array halini retuen ediyordu, burda o return edilen degerler 
     # degiskene ataniyor
+
+
+    modeltrainer = ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr, test_arr))
+
+
     
 
 
